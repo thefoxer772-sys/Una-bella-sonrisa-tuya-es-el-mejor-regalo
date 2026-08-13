@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un poquito de sol para ti ☀️</title>
+<style>
+  :root{
+    --cielo1:#FFE29A;
+    --cielo2:#FFB6C1;
+    --cielo3:#8ED1E8;
+    --sol:#FFC93C;
+    --sol-borde:#FF9F1C;
+    --texto:#4A3B52;
+    --tarjeta:#FFFDF7;
+    --coral:#FF7A6E;
+    --menta:#7FE0B5;
+    --morado:#B48CE0;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html,body{
+    height:100%;
+    font-family:'Comic Sans MS', 'Trebuchet MS', 'Segoe UI', sans-serif;
+    overflow-x:hidden;
+    max-width:100vw;
+  }
+
+  @font-face{
+    font-family:'Fredoka';
+    src:local('Trebuchet MS');
+  }
+
+  body{
+    min-height:100vh;
+    background: linear-gradient(180deg, var(--cielo3) 0%, var(--cielo2) 45%, var(--cielo1) 100%);
+    overflow-x:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:40px 20px 100px;
+  }
+
+  /* SOL */
+  .sol{
+    position:fixed;
+    top:-60px;
+    right:-40px;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #FFE082, var(--sol) 60%, var(--sol-borde) 100%);
+    box-shadow: 0 0 80px 30px rgba(255,201,60,0.6);
+    animation: girar 40s linear infinite, aparecer 1.5s ease-out;
+    z-index:0;
+  }
+  .sol::before{
+    content:"";
+    position:absolute;
+    inset:-30px;
+    border-radius:50%;
+    background: repeating-conic-gradient(from 0deg, rgba(255,159,28,0.35) 0deg 8deg, transparent 8deg 20deg);
+    animation: girar 60s linear infinite reverse;
+  }
+  @keyframes girar{ to{ transform: rotate(360deg);} }
+  @keyframes aparecer{ from{opacity:0; transform:scale(0.5);} to{opacity:1; transform:scale(1);} }
+
+  /* NUBES */
+  .nube{
+    position:fixed;
+    background:#fff;
+    border-radius:50px;
+    opacity:0.85;
+    filter: drop-shadow(0 4px 0 rgba(0,0,0,0.03));
+  }
+  .nube::before, .nube::after{
+    content:"";
+    position:absolute;
+    background:#fff;
+    border-radius:50%;
+  }
+  .n1{ width:120px; height:40px; top:120px; left:5%; }
+  .n1::before{ width:60px; height:60px; top:-30px; left:15px; }
+  .n1::after{ width:50px; height:50px; top:-22px; left:60px; }
+  .n2{ width:90px; height:32px; top:260px; left:75%; }
+  .n2::before{ width:46px; height:46px; top:-24px; left:10px; }
+  .n2::after{ width:38px; height:38px; top:-18px; left:46px; }
+
+  .n1{ animation: flotar 25s linear infinite; }
+  .n2{ animation: flotar 32s linear infinite reverse; }
+  @keyframes flotar{
+    from{ transform: translateX(-10vw); }
+    to{ transform: translateX(110vw); }
+  }
+
+  /* GLOBOS que suben */
+  .globo{
+    position:fixed;
+    bottom:-120px;
+    width:46px;
+    height:58px;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity:0.9;
+    animation: subir linear infinite;
+  }
+  .globo::after{
+    content:"";
+    position:absolute;
+    bottom:-24px;
+    left:50%;
+    width:1px;
+    height:24px;
+    background: rgba(0,0,0,0.15);
+  }
+  @keyframes subir{
+    from{ transform: translateY(0) translateX(0) rotate(-4deg); }
+    50%{ transform: translateY(-60vh) translateX(20px) rotate(4deg); }
+    to{ transform: translateY(-125vh) translateX(-10px) rotate(-4deg); }
+  }
+
+  /* Globo en forma de corazón */
+  .globo.corazon{
+    border-radius:0;
+    background:none !important;
+  }
+  .globo.corazon::before{
+    content:"";
+    position:absolute;
+    width:46px;
+    height:58px;
+    left:0; top:0;
+    background: var(--color-globo);
+    clip-path: path('M23 54 C23 54 2 36 2 18 C2 6 12 0 23 12 C34 0 44 6 44 18 C44 36 23 54 23 54 Z');
+  }
+  .globo.corazon::after{
+    bottom:-24px;
+  }
+
+  /* TARJETA PRINCIPAL */
+  .tarjeta{
+    position:relative;
+    z-index:2;
+    background: var(--tarjeta);
+    border-radius:32px;
+    max-width:560px;
+    width:100%;
+    padding:44px 36px 38px;
+    margin-top:60px;
+    box-shadow: 0 20px 45px rgba(180,120,90,0.25), 0 0 0 6px rgba(255,255,255,0.5);
+    text-align:center;
+    animation: entrada 1s cubic-bezier(.2,1.3,.4,1) 0.3s both;
+  }
+  @keyframes entrada{
+    from{ opacity:0; transform: translateY(40px) scale(0.9); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .saludo{
+    font-size:1.05rem;
+    color:var(--coral);
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+
+  h1{
+    color:var(--texto);
+    font-size:2.1rem;
+    line-height:1.25;
+    margin:10px 0 18px;
+  }
+
+  .subtitulo{
+    color:var(--morado);
+    font-size:0.85rem;
+    font-weight:600;
+    font-style:italic;
+    line-height:1.5;
+    margin:-6px 0 18px;
+    padding:0 10px;
+  }
+
+  .mensaje{
+    color:#6b5b73;
+    font-size:1.08rem;
+    line-height:1.7;
+    margin-bottom:26px;
+  }
+
+  .separador{
+    width:60px;
+    height:5px;
+    margin:0 auto 26px;
+    border-radius:10px;
+    background: linear-gradient(90deg, var(--coral), var(--sol), var(--menta), var(--morado));
+    background-size:300% 100%;
+    animation: arcoiris 4s linear infinite;
+  }
+  @keyframes arcoiris{
+    to{ background-position:300% 0; }
+  }
+
+  /* FRASE ROTATIVA */
+  .caja-frase{
+    background: linear-gradient(135deg, #FFF3D6, #FFE3EC);
+    border-radius:20px;
+    padding:22px 20px;
+    margin-bottom:26px;
+    min-height:110px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  #frase{
+    font-size:1.15rem;
+    color:var(--texto);
+    font-weight:600;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  #frase.oculto{
+    opacity:0;
+    transform: translateY(8px);
+  }
+
+  .btn{
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-weight:700;
+    font-size:1rem;
+    padding:15px 28px;
+    border-radius:50px;
+    margin:6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover{ transform: translateY(-3px) scale(1.03); }
+  .btn:active{ transform: translateY(0) scale(0.97); }
+
+  .btn-principal{
+    background: linear-gradient(135deg, var(--coral), #FF9E7A);
+    color:#fff;
+    box-shadow: 0 8px 20px rgba(255,122,110,0.45);
+  }
+  .btn-secundario{
+    background: linear-gradient(135deg, var(--menta), #4FD1A5);
+    color:#0b3d2e;
+    box-shadow: 0 8px 20px rgba(127,224,181,0.45);
+  }
+
+  .abrazo{
+    display:none;
+    margin-top:22px;
+    padding:20px;
+    border-radius:18px;
+    background: linear-gradient(135deg, #EBDBFF, #FFE3EC);
+    color:var(--texto);
+    font-size:1.05rem;
+    font-weight:600;
+    animation: entrada 0.5s ease both;
+  }
+
+  .firma{
+    margin-top:30px;
+    font-size:0.85rem;
+    color:#a998ab;
+  }
+
+  .btn-video{
+    display:block;
+    width:100%;
+    margin-top:16px;
+    background: linear-gradient(135deg, var(--morado), #8E6FD1);
+    color:#fff;
+    box-shadow: 0 8px 20px rgba(180,140,224,0.45);
+  }
+
+  .btn-carta{
+    display:block;
+    width:100%;
+    margin-top:12px;
+    background: linear-gradient(135deg, #FF9BB3, #FFC93C);
+    color:#4A3B52;
+    box-shadow: 0 8px 20px rgba(255,155,179,0.45);
+  }
+
+  /* MODAL */
+  .modal-fondo{
+    display:none;
+    position:fixed;
+    inset:0;
+    background: rgba(60,40,70,0.55);
+    backdrop-filter: blur(4px);
+    z-index:50;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .modal-fondo.activo{
+    display:flex;
+    animation: fundido 0.3s ease both;
+  }
+  @keyframes fundido{ from{opacity:0;} to{opacity:1;} }
+
+  .marco-video{
+    position:relative;
+    background: linear-gradient(160deg, #FFF6E5, #FFE9F1);
+    border-radius:28px;
+    padding:26px 30px 22px;
+    width:100%;
+    max-width:820px;
+    box-shadow: 0 25px 60px rgba(90,50,80,0.4), 0 0 0 6px rgba(255,255,255,0.6);
+    animation: entrada 0.45s cubic-bezier(.2,1.3,.4,1) both;
+  }
+
+  .etiqueta-video{
+    text-align:center;
+    font-weight:700;
+    color:var(--morado);
+    font-size:1.05rem;
+    margin-bottom:14px;
+  }
+
+  .caja-16-9{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16 / 9;
+    border-radius:18px;
+    overflow:hidden;
+    background:#000;
+    box-shadow: inset 0 0 0 4px #fff, 0 10px 24px rgba(0,0,0,0.25);
+  }
+  .caja-16-9 video{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:contain;
+    background:#000;
+  }
+
+  .cerrar{
+    position:absolute;
+    top:-16px;
+    right:-16px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:none;
+    background: var(--coral);
+    color:#fff;
+    font-size:1.1rem;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow: 0 6px 14px rgba(255,122,110,0.5);
+    z-index:5;
+    transition: transform 0.15s ease;
+  }
+  .cerrar:hover{ transform: scale(1.1) rotate(90deg); }
+
+  .mascota{
+    position:absolute;
+    width:74px;
+    height:74px;
+    z-index:4;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+  }
+  .mascota-izq{
+    top:-30px;
+    left:18px;
+    animation: mecer 3.5s ease-in-out infinite;
+  }
+  .mascota-der{
+    top:-26px;
+    right:18px;
+    animation: mecer 3.5s ease-in-out infinite 0.5s;
+  }
+  .mascota-izq-abajo{
+    bottom:-24px;
+    left:-18px;
+    width:52px; height:52px;
+    animation: mecer 4s ease-in-out infinite 0.3s;
+  }
+  .mascota-der-abajo{
+    bottom:-24px;
+    right:-18px;
+    width:52px; height:52px;
+    animation: mecer 4s ease-in-out infinite 0.8s;
+  }
+  @keyframes mecer{
+    0%,100%{ transform: rotate(-6deg) translateY(0); }
+    50%{ transform: rotate(6deg) translateY(-4px); }
+  }
+
+  .corazones-marco{
+    text-align:center;
+    margin-top:14px;
+    font-size:1.2rem;
+    letter-spacing:6px;
+  }
+
+  /* CARTITA */
+  .marco-carta{
+    position:relative;
+    background: linear-gradient(160deg, #FFF6E5, #FFE9F1);
+    border-radius:28px;
+    padding:34px 30px 24px;
+    width:100%;
+    max-width:520px;
+    box-shadow: 0 25px 60px rgba(90,50,80,0.4), 0 0 0 6px rgba(255,255,255,0.6);
+    animation: entrada 0.45s cubic-bezier(.2,1.3,.4,1) both;
+  }
+
+  .carta-scroll{
+    max-height:75vh;
+    overflow-y:auto;
+  }
+
+  .sello{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform: translateX(-50%) rotate(-6deg);
+    width:52px;
+    height:52px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.6rem;
+    box-shadow: 0 8px 18px rgba(90,50,80,0.25);
+  }
+
+  .papel-carta{
+    background: repeating-linear-gradient(#FFFDF7 0 34px, #F3E9D8 35px 36px);
+    border-radius:18px;
+    padding:30px 26px 24px;
+    margin-top:18px;
+    box-shadow: inset 0 0 0 2px rgba(180,140,224,0.25), 0 6px 16px rgba(0,0,0,0.08);
+    position:relative;
+  }
+
+  .carta-encabezado{
+    font-weight:700;
+    color:var(--morado);
+    font-size:1.15rem;
+    margin-bottom:12px;
+    text-align:left;
+  }
+
+  .carta-texto{
+    color:var(--texto);
+    font-size:1.02rem;
+    line-height:2.15;
+    text-align:left;
+  }
+
+  .carta-firma{
+    margin-top:18px;
+    text-align:right;
+    font-style:italic;
+    color:var(--coral);
+    font-weight:600;
+  }
+
+  @media (max-width:560px){
+    .marco-video{ padding:22px 16px 18px; }
+    .mascota{ width:54px; height:54px; }
+    .mascota-izq{ left:6px; top:-22px; }
+    .mascota-der{ right:6px; top:-20px; }
+  }
+
+  /* STICKERS DE FONDO */
+  .sticker-fondo{
+    position:fixed;
+    z-index:1;
+    filter: drop-shadow(0 4px 8px rgba(90,50,80,0.12));
+    animation: flotar-suave 6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes flotar-suave{
+    0%,100%{ transform: translateY(0) rotate(var(--rot,0deg)); }
+    50%{ transform: translateY(-10px) rotate(var(--rot,0deg)); }
+  }
+
+  /* CONFETI */
+  .confeti{
+    position:fixed;
+    top:-10px;
+    width:10px;
+    height:16px;
+    opacity:0.95;
+    z-index:10;
+    pointer-events:none;
+    animation: caer linear forwards;
+  }
+  @keyframes caer{
+    to{ transform: translateY(110vh) rotate(600deg); opacity:0.9; }
+  }
+
+  @media (max-width:480px){
+    h1{ font-size:1.6rem; }
+    .sol{ width:150px; height:150px; top:-40px; right:-40px; }
+    .cara-sol{ font-size:1.6rem; top:35px; right:35px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="cachorro-nube" viewBox="0 0 120 120">
+        <path d="M30 42 C14 14 38 2 48 26 C52 16 68 16 72 26 C82 2 106 14 90 42 Z" fill="#FFFFFF" stroke="#C9A6E0" stroke-width="2"/>
+        <ellipse cx="60" cy="80" rx="32" ry="28" fill="#FFFFFF" stroke="#C9A6E0" stroke-width="2"/>
+        <ellipse cx="35" cy="88" rx="10" ry="9" fill="#FFFFFF" stroke="#C9A6E0" stroke-width="2"/>
+        <ellipse cx="45" cy="70" rx="4.2" ry="5.4" fill="#5B4B63"/>
+        <ellipse cx="75" cy="70" rx="4.2" ry="5.4" fill="#5B4B63"/>
+        <path d="M52 82 Q60 88 68 82" stroke="#5B4B63" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <circle cx="40" cy="80" r="5.5" fill="#FFC7D6" opacity="0.75"/>
+        <circle cx="80" cy="80" r="5.5" fill="#FFC7D6" opacity="0.75"/>
+      </symbol>
+
+      <symbol id="cachorro-mantequilla" viewBox="0 0 120 120">
+        <ellipse cx="60" cy="82" rx="38" ry="32" fill="#FFD98C" stroke="#C98A3A" stroke-width="2"/>
+        <ellipse cx="30" cy="70" rx="12" ry="14" fill="#FFD98C" stroke="#C98A3A" stroke-width="2"/>
+        <ellipse cx="90" cy="70" rx="12" ry="14" fill="#FFD98C" stroke="#C98A3A" stroke-width="2"/>
+        <path d="M55 34 L60 20 L65 34 Z" fill="#FF9E9E" stroke="#C98A3A" stroke-width="1.6"/>
+        <circle cx="60" cy="18" r="4" fill="#FF9E9E" stroke="#C98A3A" stroke-width="1.6"/>
+        <ellipse cx="47" cy="76" rx="4.3" ry="5.4" fill="#8A5A2B"/>
+        <ellipse cx="73" cy="76" rx="4.3" ry="5.4" fill="#8A5A2B"/>
+        <ellipse cx="60" cy="86" rx="9" ry="6.5" fill="#FFF3D6" stroke="#C98A3A" stroke-width="1.6"/>
+        <path d="M52 96 Q60 101 68 96" stroke="#8A5A2B" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <circle cx="42" cy="86" r="5.5" fill="#FFAF8F" opacity="0.65"/>
+        <circle cx="78" cy="86" r="5.5" fill="#FFAF8F" opacity="0.65"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="sol"></div>
+
+  <div class="nube n1"></div>
+  <div class="nube n2"></div>
+
+  <!-- stickers de fondo generados por JS -->
+
+  <!-- globos generados por JS -->
+
+  <main class="tarjeta">
+    <p class="saludo">Para ti, hoy</p>
+    <h1>Hay días buenos y días malos.</h1>
+    <p class="subtitulo">Y te amaré en todos los días — en tus días buenos y en tus días malos, siempre te amaré.</p>
+    <p class="mensaje">
+      Está bien no estar bien todo el tiempo. Los días grises también pasan,
+      y estaré contigo en tus días buenos y malos.
+    </p>
+
+    <div class="separador"></div>
+
+    <div class="caja-frase">
+      <p id="frase">💛 Eres hermosa en los días buenos y en los días malos.</p>
+    </div>
+
+    <button class="btn btn-principal" onclick="nuevaFrase()">En los días buenos ☀️</button>
+    <button class="btn btn-secundario" onclick="mostrarAbrazo()">Y en los días malos 🌧️</button>
+
+    <div class="abrazo" id="cajaAbrazo">
+      🫂 Y en los días malos, sigues siendo una persona increíble. Quizá triste, enojada o abatida,
+      pero sigues siendo una persona increíble, y siempre te amaré.
+    </div>
+
+    <button class="btn btn-video" onclick="abrirVideo()">🎬 Tengo un video para ti</button>
+    <button class="btn btn-carta" onclick="abrirCarta()">💌 Tengo una cartita para ti</button>
+
+    <p class="firma">hecho con cariño, solo para alegrarte el día 🌻</p>
+  </main>
+
+  <!-- MODAL REPRODUCTOR -->
+  <div class="modal-fondo" id="modalVideo">
+    <div class="marco-video">
+
+      <button class="cerrar" onclick="cerrarVideo()">✕</button>
+
+      <!-- Personajitos decorativos originales -->
+      <svg class="mascota mascota-izq"><use href="#cachorro-nube"/></svg>
+      <svg class="mascota mascota-der"><use href="#cachorro-mantequilla"/></svg>
+      <svg class="mascota mascota-izq-abajo"><use href="#cachorro-mantequilla"/></svg>
+      <svg class="mascota mascota-der-abajo"><use href="#cachorro-nube"/></svg>
+
+      <div class="etiqueta-video">✨ Eres mi sol en los días oscuros, y quiero ser tu calor en los días fríos ✨</div>
+
+      <div class="caja-16-9">
+        <video id="reproductor" controls playsinline preload="metadata">
+          <source src="video-sorpresa.mp4" type="video/mp4">
+          Tu navegador no soporta el video.
+        </video>
+      </div>
+
+      <div class="corazones-marco">💛 💗 💜</div>
+    </div>
+  </div>
+
+  <!-- MODAL CARTITA -->
+  <div class="modal-fondo" id="modalCarta">
+    <div class="marco-carta">
+
+      <button class="cerrar" onclick="cerrarCarta()">✕</button>
+
+      <svg class="mascota mascota-izq"><use href="#cachorro-mantequilla"/></svg>
+      <svg class="mascota mascota-der"><use href="#cachorro-nube"/></svg>
+
+      <div class="sello">💌</div>
+
+      <div class="carta-scroll">
+        <div class="papel-carta">
+          <p class="carta-encabezado">Para ti</p>
+          <p class="carta-texto">
+            Hoy no es un día azulado para ti, es un día gris. Pero no quiero
+            ser parte de ese gris en tu vida.
+            <br><br>
+            Amor, quiero verte feliz y alegre. Espero que este detalle te anime un poco.
+            <br><br>
+            Espero que puedas sonreír al leer esto, y que tu bella sonrisa
+            vuelva a brillar.
+            <br><br>
+            Te amo.
+          </p>
+          <p class="carta-firma">Att: Becker, quien siempre te va a amar, por siempre y para siempre 💛</p>
+        </div>
+
+        <div class="corazones-marco">🌻 💌 🌷</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function abrirVideo(){
+    document.getElementById('modalVideo').classList.add('activo');
+  }
+  function cerrarVideo(){
+    const modal = document.getElementById('modalVideo');
+    const video = document.getElementById('reproductor');
+    video.pause();
+    modal.classList.remove('activo');
+  }
+  document.getElementById('modalVideo').addEventListener('click', function(e){
+    if(e.target === this){ cerrarVideo(); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ cerrarVideo(); cerrarCarta(); }
+  });
+
+  function abrirCarta(){
+    document.getElementById('modalCarta').classList.add('activo');
+  }
+  function cerrarCarta(){
+    document.getElementById('modalCarta').classList.remove('activo');
+  }
+  document.getElementById('modalCarta').addEventListener('click', function(e){
+    if(e.target === this){ cerrarCarta(); }
+  });
+
+  const frases = [
+    "Eres hermosa en los días buenos y en los días malos 💛",
+    "Eres una gran persona ✨",
+    "Eres la mejor persona que he conocido 🌟",
+    "Eres el mejor regalo que he tenido 🎁",
+    "Soy feliz contigo y siempre lo seré 💫",
+    "Mi pedazo de cinnamon roll 🍥"
+  ];
+
+  function nuevaFrase(){
+    const el = document.getElementById('frase');
+    el.classList.add('oculto');
+    setTimeout(()=>{
+      let nueva;
+      do{ nueva = frases[Math.floor(Math.random()*frases.length)]; }
+      while(nueva === el.textContent && frases.length > 1);
+      el.textContent = nueva;
+      el.classList.remove('oculto');
+      lanzarConfeti(18);
+    }, 300);
+  }
+
+  function mostrarAbrazo(){
+    document.getElementById('cajaAbrazo').style.display = 'block';
+    lanzarConfeti(30);
+  }
+
+  const coloresConfeti = ['#FF7A6E','#FFC93C','#7FE0B5','#B48CE0','#8ED1E8'];
+  function lanzarConfeti(cantidad){
+    for(let i=0;i<cantidad;i++){
+      const c = document.createElement('div');
+      c.className = 'confeti';
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.background = coloresConfeti[Math.floor(Math.random()*coloresConfeti.length)];
+      c.style.animationDuration = (2.5 + Math.random()*2) + 's';
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(c);
+      setTimeout(()=> c.remove(), 5000);
+    }
+  }
+
+  // Globos flotando de fondo
+  const coloresGlobo = ['#FF7A6E','#FFC93C','#7FE0B5','#B48CE0','#8ED1E8'];
+  function crearGlobo(){
+    const g = document.createElement('div');
+    const esCorazon = Math.random() < 0.5;
+    g.className = 'globo' + (esCorazon ? ' corazon' : '');
+    g.style.left = Math.random()*90 + 'vw';
+    const color = coloresGlobo[Math.floor(Math.random()*coloresGlobo.length)];
+    g.style.setProperty('--color-globo', color);
+    if(!esCorazon){ g.style.background = color; }
+    const duracion = 14 + Math.random()*10;
+    g.style.animationDuration = duracion + 's';
+    document.body.appendChild(g);
+    setTimeout(()=> g.remove(), duracion*1000);
+  }
+  setInterval(crearGlobo, 2200);
+  crearGlobo();
+  setTimeout(crearGlobo, 700);
+  setTimeout(crearGlobo, 1400);
+
+  // Stickers decorativos esparcidos por la página
+  const stickers = [
+    { simbolo:'cachorro-nube',        top:'6%',  left:'3%',  size:60, rot:-12 },
+    { simbolo:'cachorro-mantequilla', top:'14%', left:'88%', size:52, rot:10 },
+    { simbolo:'cachorro-mantequilla', top:'34%', left:'2%',  size:44, rot:8 },
+    { simbolo:'cachorro-nube',        top:'46%', left:'90%', size:58, rot:-8 },
+    { simbolo:'cachorro-nube',        top:'62%', left:'4%',  size:50, rot:14 },
+    { simbolo:'cachorro-mantequilla', top:'72%', left:'87%', size:64, rot:-10 },
+    { simbolo:'cachorro-mantequilla', top:'88%', left:'8%',  size:40, rot:6 },
+    { simbolo:'cachorro-nube',        top:'92%', left:'80%', size:46, rot:-6 }
+  ];
+  stickers.forEach((s, i)=>{
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.classList.add('sticker-fondo');
+    svg.setAttribute('width', s.size);
+    svg.setAttribute('height', s.size);
+    svg.style.top = s.top;
+    svg.style.left = s.left;
+    svg.style.setProperty('--rot', s.rot + 'deg');
+    svg.style.animationDelay = (i * 0.4) + 's';
+    const use = document.createElementNS(ns, 'use');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#' + s.simbolo);
+    svg.appendChild(use);
+    document.body.appendChild(svg);
+  });
+</script>
+
+</body>
+</html>
